@@ -45,7 +45,7 @@ abstract class Document {
 	public function normalizePropertyObject($property, $object) {
 		global $mongo;
 		$id = $this->old_document[$property];
-		$this->$property = $mongo->getObjectFromID($object, $id);
+		$this->$property = $mongo->getObjectByID($object, $id);
 	}
 	
 	public function normalizePropertyArray($property, $object) {

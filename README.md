@@ -13,6 +13,52 @@ Add your existing classes to the models.php file and have them extend *document*
 
 `$mongo->getObjectFromID("ClassName","ID");`
 
+# Models & Mongo
+
+### Models
+
+Your classes. Literally add two functions and a variable and allow any model to create objects.
+
+```
+class YourClass extend document {
+	
+	var $collection = 'YourCollection';
+	
+	function toDocument() {
+		$document = parent::toDocument();
+		// Your code setting the document values.
+		return $document;
+	}
+
+	function fromDocument($document) {
+		parent::fromDocument($document);
+		// Your code setting the objects properties.
+	}
+}
+```
+
+When you have an object whose class extends document than saving is extremely simple.
+
+`$object->save();`
+
+### Mongo
+
+Your connection to mongo. To get your documents as objects use this controller. One global mongo object is defined for ease of use.
+
+**getObjectByID('ClassName',$id)**
+
+This will return your exact object.
+
+**getObjectsFromQuery('ClassName',$query)**
+
+An array of objects based on a custom query. Not all queries need to be written out though.
+
+**getObjectsByKey('ClassName', 'KeyName', $value)**
+
+If you're only searching by one key-value pair. This simple function will work.
+
+When writing content specific queries for your application it's recommended that you add them to the mongo_db class and reuse them as often as possible. This framework can certainly expand to include more useful queries. The idea though is that all the mongo queries are generic and return php objects not documents.
+
 ## Documents & Objects
 
 By using the toDocument and fromDocument methods classes can customize how their data is stored verses how it is presented to the PHP application. This allows for far greater flexibility than many other ODMs. It does however limit the ability to link object properties directly with document keys. This is the reasoning behind the KeysChanged model. It is understood this may be slower on the application side because of the extra calculations however we believe it is easier to develop if you don't have to worry about how property changes effect the underlying document structure.
@@ -45,7 +91,7 @@ class User extends document {
 	}
 }
 
-$user = $mongo->getObjectFromId('User','1');
+$user = $mongo->getObjectById('User','1');
 $friends = $user->getFriends();
 
 ```

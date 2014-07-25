@@ -42,7 +42,7 @@ class mongo_db {
 			return $new_document;
 		}
 	}
-	function getObjectByField($objectType, $field, $value) {
+	function getObjectByKey($objectType, $field, $value) {
 		$object = new $objectType();
 		$collection = $object->collection;
 		$document = $this->db->{$collection}->findOne(array($field=>$value));
@@ -56,8 +56,8 @@ class mongo_db {
 		return $this->getObjectsWithQuery($objectType, array($field=>$value));
 	}
 	
-	function getObjectFromID($objectType, $id) {
-		return $this->getObjectByField($objectType,'_id',new MongoId($id
+	function getObjectByID($objectType, $id) {
+		return $this->getObjectByKey($objectType,'_id',new MongoId($id));
 	}
 	
 	function getCountForCollection($collection) {
