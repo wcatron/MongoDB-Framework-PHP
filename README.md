@@ -22,16 +22,18 @@ By using the toDocument and fromDocument methods classes can customize how their
 There are two normalizing methods that can take an object ID or an array of IDs and turn them into the objects they represent.
 
 Examples:
-` JSON
+```
+JSON
 User Collection
 {
 	"_id":{"$oid":"1"}
 	"username":"JohnDoe2000",
 	"friends":["2","3"]
 }
-`
+```
 
-` PHP
+```
+PHP
 class User extends document {
 	var $friends; // must match property name for now.
 	...
@@ -46,7 +48,7 @@ class User extends document {
 $user = $mongo->getObjectFromId('User','1');
 $friends = $user->getFriends();
 
-`
+```
 
 ## IDs as Strings
 
