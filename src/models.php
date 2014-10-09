@@ -1,4 +1,4 @@
-<?
+<?php
 
 abstract class Document {
 	public $old_document = null;
@@ -6,7 +6,7 @@ abstract class Document {
 	const COLLECTION = "undefined";
 
 	public function save() {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		if ($this->validate()) {
 			$new_document = $mongo->saveDocument($this);
 			$this->fromDocument($new_document);
@@ -16,7 +16,7 @@ abstract class Document {
 	}
 
 	public function secure_save() {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		if ($this->validate()) {
 			$new_document = $mongo->saveDocument($this, true);
 			$this->fromDocument($new_document);
@@ -26,7 +26,7 @@ abstract class Document {
 	}
 
 	public function delete() {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		return $mongo->deleteObject($this);
 	}
 
@@ -57,19 +57,19 @@ abstract class Document {
 	}
 
 	public function normalizePropertyObject($property, $object) {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		$id = $this->old_document[$property];
 		$this->$property = $mongo->getObjectByID($object, $id);
 	}
 
 	public function normalizeObjectFromKeyToProperty($object, $key, $property) {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		$id = $this->old_document[$key];
 		$this->$property = $mongo->getObjectByID($object, $id);
 	}
 
 	public function normalizePropertyArray($property, $object) {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		$ids = $this->old_document[$property];
 		$this->$property = array();
 		$id_objs = array_map("Document::mongoIDFromString",$ids);
@@ -87,7 +87,7 @@ abstract class Document {
     }
 
 	public static function getByID($id) {
-		global $mongo;
+		$mongo = mongo_db::getInstance();
 		return $mongo->getObjectByID(self::getObjectName(),$id);
 	}
 }

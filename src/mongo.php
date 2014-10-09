@@ -1,9 +1,16 @@
-<?
-
-$mongo = new mongo_db();
+<?php
 
 class mongo_db {
 	var $db;
+
+	public static function getInstance() {
+      static $mongo = null;
+      if (null === $mongo) {
+          $mongo = new static();
+					echo "Created new mongo Instance";
+      }
+      return $mongo;
+  }
 
 	function mongo_db($config = null) {
 		$this->connect($config);
@@ -15,7 +22,7 @@ class mongo_db {
 				$config = $configs['mdb_config'];
 			}
 			$m = new MongoClient("mongodb://".$config['user'].":".$config['pass']."@".$config['host']."/".$config['db']);
-			$this->db = $m->$dbname;
+			$this->db = $m->$config['db'];
 		}
 	}
 	function saveDocument ($object) {
@@ -47,7 +54,8 @@ class mongo_db {
 		} else {
 			// New Document
 			$document_results = $this->db->{$instancePropertyName}->insert($new_document);
-
+			echo "Creating new document ";
+			var_dump($new_document);
 			return $new_document;
 		}
 	}

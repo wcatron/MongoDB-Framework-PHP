@@ -1,19 +1,32 @@
 <?php
 
+include('../phpunit.phar');
+
 include('../src/mongo.php');
 include('../src/models.php');
 
 include('person.php');
-
-$mongo = new Mongo();
 
 $person = new Person();
 
 $person->name = "Unit Test";
 $person->title = "Mrs.";
 
-$person->save($mongo);
+$person->save();
 
-$person->delete($mongo);
+echo "Saved Person";
+
+$person_id = $person->getID();
+
+$person = Person::getByID($person_id);
+
+if ($person->name != "Unit Test") {
+  die('Unit Test Failed: Name');
+}
+if ($person->title != "Mrs.") {
+  die('Unit Test Failed: Title');
+}
+
+$person->delete();
 
 ?>

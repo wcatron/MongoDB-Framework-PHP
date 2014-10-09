@@ -6,12 +6,14 @@ class SubDocument extends Document {
 
   const COLLECTION = "subdocuments";
 
-  function toRow() {
-    $row = parent::toRow();
-    return $row;
+  function toDocument() {
+    $document = parent::toDocument();
+
+    return $document;
   }
-  function fromRow($row) {
-    parent::fromRow($row);
+  function fromDocument($document) {
+    parent::fromDocument($document);
+
   }
 }
 
