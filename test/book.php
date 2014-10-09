@@ -10,7 +10,7 @@ class Book extends Document {
   function toDocument() {
     $document = parent::toDocument();
     $document['title'] = $this->title;
-    $this->denormalizeKeyToObject('author', $document);
+    $this->denormalizeKeyToObject($document, 'author');
     return $document;
   }
   function fromDocument($document) {

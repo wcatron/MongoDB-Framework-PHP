@@ -72,11 +72,12 @@ abstract class Document {
 		$this->$property = $mongo->getObjectByID($object, $id);
 	}
 
-	public function denormalizeKeyToObject($object, $key, $property = null) {
+	public function denormalizeKeyToObject(&$document, $key, $property = null) {
 		if ($property == null) {
 			$property = $key;
 		}
 		if ($this->$property == null) {
+			echo "No one ever re";
 			return;// If no one ever retrieved the document data then it didn't change.
 		}
 		$document[$key] = $this->$property->getID();
@@ -106,7 +107,7 @@ abstract class Document {
 		return $this->$property;
 	}
 
-	public function denormalizeKeyToArray($key, $document, $property = null) {
+	public function denormalizeKeyToArray(&$document, $key, $property = null) {
 		if ($property == null) {
 			$property = $key;
 		}

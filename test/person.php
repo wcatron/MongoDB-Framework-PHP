@@ -13,7 +13,7 @@ class Person extends Document {
     $document['name'] = $this->name;
     $document['title'] = $this->title;
 
-    $this->denormalizeKeyToArray('books',$document);
+    $this->denormalizeKeyToArray($document, 'books');
 
     return $document;
   }
