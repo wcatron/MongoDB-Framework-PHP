@@ -95,9 +95,13 @@ abstract class Document {
 		if ($this->$property == null) {
 			$mongo = mongo_db::getInstance();
 			$ids = $this->old_document[$key];
-			$id_objs = array_map("Document::mongoIDFromString",$ids);
-			$query = array('_id'=>array('$in'=>$id_objs));
-			$this->$property = $mongo->getObjectsWithQuery($object,$query);
+			if (count($ids) > 0) {
+				$id_objs = array_map("Document::mongoIDFromString",$ids);
+				$query = array('_id'=>array('$in'=>$id_objs));
+				$this->$property = $mongo->getObjectsWithQuery($object,$query);
+			} else {
+				$this->$property = array();
+			}
 		}
 		return $this->$property;
 	}
