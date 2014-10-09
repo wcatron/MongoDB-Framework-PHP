@@ -7,12 +7,16 @@ class Author extends Document {
 
   const COLLECTION = "authors";
 
+  function Author($name) {
+    $this->name = $name;
+  }
+
   function toDocument() {
     $document = parent::toDocument();
     $document['name'] = $this->name;
     return $document;
   }
-  
+
   function fromDocument($document) {
     parent::fromDocument($document);
     $document['name'] = $this->name;
