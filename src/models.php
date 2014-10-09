@@ -56,7 +56,12 @@ abstract class Document {
 		return ($this->getID() == $object->getID());
 	}
 
-	// Use these to go from referencing id to object.
+	/*
+
+	Use these to go from referencing id to object.
+	Use denormailize in the toDocument function
+
+	*/
 
 	public function normalizedObjectFromKey($object, $key, $property = null) {
 		if ($property == null) {
@@ -79,8 +84,8 @@ abstract class Document {
 
 	/*
 
-	Working. Use in getter function for array.
-	Will only actuall fetch once the first time.
+	Use these to go from referencing array of ids to objects.
+	Use denormailize in the toDocument function
 
 	*/
 	public function normalizedArrayFromKey($object, $key, $property = null) {
@@ -96,12 +101,6 @@ abstract class Document {
 		}
 		return $this->$property;
 	}
-
-	/*
-
-	Use in toDocument function in subclasses. If property and key names are the same leave of last parameter.
-
-	*/
 
 	public function denormalizeKeyToArray($key, $document, $property = null) {
 		if ($property == null) {
