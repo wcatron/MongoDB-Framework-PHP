@@ -5,7 +5,7 @@ class Book extends Document {
   protected $author;
   protected $owner; //
 
-  const COLLECTION = "examples";
+  const COLLECTION = "books";
 
   function toDocument() {
     $document = parent::toDocument();

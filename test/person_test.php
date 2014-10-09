@@ -1,5 +1,7 @@
 <?php
 
+header('Content-Type:text/plain');
+
 include('../phpunit.phar');
 
 include('../src/mongo.php');
@@ -44,6 +46,8 @@ class PersonTest extends PHPUnit_Framework_TestCase {
 
     $person = Person::getByID($person_id);
     $books = $person->getBooks();
+    echo "Books: ";
+    var_dump($books);
     $this->assertEquals($books[0], $book);
 
     $person->delete();
