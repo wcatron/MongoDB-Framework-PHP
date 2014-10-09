@@ -106,10 +106,13 @@ abstract class Document {
 		if ($property == null) {
 			$property = $key;
 		}
+		$document[$key] = array();
 		if ($this->$property == null) {
+			if (isset($this->old_document)) {
+				$document[$key] = $this->old_document[$key];
+			}
 			return;// If no one ever retrieved the document data then it didn't change.
 		}
-		$document[$key] = array();
 		foreach ($this->$property as $object) {
 			array_push($document[$key],$object->getID());
 		}

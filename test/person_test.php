@@ -36,7 +36,7 @@ class PersonTest extends PHPUnit_Framework_TestCase {
     $book = new Book();
     $book->title = "I Think I Don't Remember";
     $book->setAuthor($author);
-    $books->save();
+    $book->save();
 
     $person->addBook($person);
     $person->save();
