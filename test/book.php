@@ -18,8 +18,8 @@ class Book extends Document {
     $document['title'] = $this->title;
   }
 
-  function getAuthor() {
-    return $this->normalizedObjectFromKey('Author','author');
+  function &getAuthor() {
+    return &$this->normalizedObjectFromKey('Author','author');
   }
 
   function setAuthor($author) {

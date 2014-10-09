@@ -23,12 +23,12 @@ class Person extends Document {
     $this->title = $document['title'];
   }
 
-  function getBooks() {
-    return $this->normalizedArrayFromKey('Book','books');
+  function &getBooks() {
+    return &$this->normalizedArrayFromKey('Book','books');
   }
 
   function addBook($book) {
-    array_push($this->getBooks(), $book);
+    array_push(&$this->getBooks(), $book);
   }
 
 }

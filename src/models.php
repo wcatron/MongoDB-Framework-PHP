@@ -63,13 +63,16 @@ abstract class Document {
 
 	*/
 
-	public function normalizedObjectFromKey($object, $key, $property = null) {
+	public function &normalizedObjectFromKey($object, $key, $property = null) {
 		if ($property == null) {
 			$property = $key;
 		}
-		$mongo = mongo_db::getInstance();
-		$id = $this->old_document[$key];
-		$this->$property = $mongo->getObjectByID($object, $id);
+		if ($this->$property == null) {
+			$mongo = mongo_db::getInstance();
+			$id = $this->old_document[$key];
+			$this->$property = $mongo->getObjectByID($object, $id);
+		}
+		return $this->$property;
 	}
 
 	public function denormalizeKeyToObject(&$document, $key, $property = null) {
@@ -89,7 +92,7 @@ abstract class Document {
 	Use denormailize in the toDocument function
 
 	*/
-	public function normalizedArrayFromKey($object, $key, $property = null) {
+	public function &normalizedArrayFromKey($object, $key, $property = null) {
 		if ($property == null) {
 			$property = $key;
 		}
