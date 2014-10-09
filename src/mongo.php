@@ -7,7 +7,6 @@ class mongo_db {
       static $mongo = null;
       if (null === $mongo) {
           $mongo = new static();
-					echo "Created new mongo Instance";
       }
       return $mongo;
   }
@@ -54,7 +53,6 @@ class mongo_db {
 		} else {
 			// New Document
 			$document_results = $this->db->{$instancePropertyName}->insert($new_document);
-			echo "Creating new document ";
 			var_dump($new_document);
 			return $new_document;
 		}

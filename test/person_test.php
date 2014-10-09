@@ -7,26 +7,29 @@ include('../src/models.php');
 
 include('person.php');
 
-$person = new Person();
+class PersonTest extends PHPUnit_Framework_TestCase {
+  public function testCreateAndDelete() {
 
-$person->name = "Unit Test";
-$person->title = "Mrs.";
+      $person = new Person();
 
-$person->save();
+      $person->name = "Unit Test";
+      $person->title = "Mrs.";
 
-echo "Saved Person";
+      $person->save();
 
-$person_id = $person->getID();
+      $person_id = $person->getID();
 
-$person = Person::getByID($person_id);
+      $person = Person::getByID($person_id);
 
-if ($person->name != "Unit Test") {
-  die('Unit Test Failed: Name');
+      $this->assertEquals('Unit Test', $person->name);
+      $this->assertEquals('Mrs.', $person->title);
+
+      $person->delete();
+    }
 }
-if ($person->title != "Mrs.") {
-  die('Unit Test Failed: Title');
-}
 
-$person->delete();
+$test = new PersonTest();
+
+$test->testCreateAndDelete();
 
 ?>
