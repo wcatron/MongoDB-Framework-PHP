@@ -6,6 +6,8 @@ include('../src/mongo.php');
 include('../src/models.php');
 
 include('person.php');
+include('author.php');
+include('book.php');
 
 class PersonTest extends PHPUnit_Framework_TestCase {
 
