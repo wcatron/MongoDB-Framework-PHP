@@ -9,23 +9,26 @@ include('person.php');
 
 class PersonTest extends PHPUnit_Framework_TestCase {
   public function testCreateAndDelete() {
+    $person = new Person();
 
-      $person = new Person();
+    $person->name = "Unit Test";
+    $person->title = "Mrs.";
 
-      $person->name = "Unit Test";
-      $person->title = "Mrs.";
+    $person->save();
 
-      $person->save();
+    $person_id = $person->getID();
 
-      $person_id = $person->getID();
+    $person = Person::getByID($person_id);
 
-      $person = Person::getByID($person_id);
+    $this->assertEquals('Unit Test', $person->name);
+    $this->assertEquals('Mrs.', $person->title);
 
-      $this->assertEquals('Unit Test', $person->name);
-      $this->assertEquals('Mrs.', $person->title);
-
-      $person->delete();
-    }
+    $person->delete();
+  }
+  public function testBooks() {
+    $person = new Person();
+    $person->boo
+  }
 }
 
 $test = new PersonTest();
