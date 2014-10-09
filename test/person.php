@@ -4,7 +4,7 @@ class Person extends Document {
   public $name;
   public $title;
 
-  private $books;
+  protected $books;
 
   const COLLECTION = "people";
 

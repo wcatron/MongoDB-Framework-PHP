@@ -3,7 +3,7 @@
 class Author extends Document {
   public $name;
 
-  private $books;
+  protected $books;
 
   const COLLECTION = "authors";
 

@@ -2,8 +2,8 @@
 
 class Book extends Document {
   public $title;
-  private $author;
-  private $owner; //
+  protected $author;
+  protected $owner; //
 
   const COLLECTION = "examples";
 
@@ -25,7 +25,7 @@ class Book extends Document {
   function setAuthor($author) {
     $this->author = $author;
   }
-  
+
 }
 
 ?>

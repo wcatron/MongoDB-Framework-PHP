@@ -10,7 +10,7 @@ include('person.php');
 class PersonTest extends PHPUnit_Framework_TestCase {
 
   public function testCreateAndDelete() {
-    $person = this::createPersonForTest();
+    $person = self::createPersonForTest();
 
     $person->save();
 
@@ -24,7 +24,7 @@ class PersonTest extends PHPUnit_Framework_TestCase {
     $person->delete();
   }
   public function testBooks() {
-    $person = this::createPersonForTest();
+    $person = self::createPersonForTest();
     $person->save();
     $person_id = $person->getID();
 
