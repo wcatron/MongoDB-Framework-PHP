@@ -13,6 +13,10 @@ Create models for documents and have them extend *document*. Implement the toDoc
 
 `Class::getByID("ID");`
 
+# Installation
+
+Add the `~/src/mongo.php` file to your project and include it along with any necessary models.
+
 # Models & Mongo
 
 ### Models

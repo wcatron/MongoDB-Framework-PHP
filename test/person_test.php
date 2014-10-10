@@ -5,7 +5,6 @@ header('Content-Type:text/plain');
 include('../phpunit.phar');
 
 include('../src/mongo.php');
-include('../src/models.php');
 
 include('person.php');
 include('author.php');
