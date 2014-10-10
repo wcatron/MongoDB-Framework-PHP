@@ -188,12 +188,12 @@ class DocumentArray {
 		$this->ids[] = $id;
 	}
 
-	public function toArray() {
+	public function get() {
 		if (!$loaded) {
 			$id_objs = array_map("Document::mongoIDFromString",$this->ids);
 			$query = array('_id'=>array('$in'=>$id_objs));
-			$objects = mongo_db::getInstance()->getObjectsWithQuery($this->object,$query);
-			foreach ($objects as $object) {
+			$objects_results = mongo_db::getInstance()->getObjectsWithQuery($this->object,$query);
+			foreach ($objects_results as $object) {
 				$this->objects[$object->getID()] = $object;
 			}
 		}
@@ -230,7 +230,7 @@ class DocumentObject {
 		}
 		return $this->object;
 	}
-	
+
 	public function getID() {
 		return $this->id;
 	}

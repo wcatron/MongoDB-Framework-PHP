@@ -19,7 +19,7 @@ class Author extends Document {
 
   function fromDocument($document) {
     parent::fromDocument($document);
-    $document['name'] = $this->name;
+    $this->name = $document['name'];
   }
 
   function getBooks() {

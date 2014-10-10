@@ -18,7 +18,7 @@ class Book extends Document {
   }
   function fromDocument($document) {
     parent::fromDocument($document);
-    $document['title'] = $this->title;
+    $this->title = $document['title'];
   }
 }
 
