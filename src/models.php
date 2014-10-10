@@ -3,6 +3,7 @@
 abstract class Document {
 	public $old_document = null;
 	public $collection;
+	private $document_arrays;
 	const COLLECTION = "undefined";
 
 	public function save() {
@@ -38,14 +39,22 @@ abstract class Document {
 	}
 
 	public function toDocument() {
-		if ($this->getID() == null) {
-			return array();
+		$id = $this->getID();
+		$document = array();
+		if ($id != null) {
+			$document['_id'] = new MongoId($id);
 		}
-		return array("_id"=>new MongoId($this->getID()));
+		foreach ($this->document_arrays as $array_property) {
+			$this->$array_property->toDocument($document);
+		}
+		return $document;
 	}
 
 	public function fromDocument($document) {
 		$this->old_document = $document;
+		foreach ($this->document_arrays as $array_property) {
+			$this->$array_property->fromDocument($document, $this);
+		}
 	}
 
 	public function customUpdate() {
@@ -92,7 +101,16 @@ abstract class Document {
 	Use denormailize in the toDocument function
 
 	*/
-	public function &normalizedArrayFromKey($object, $key, $property = null) {
+
+	public function setArrayForKey($object, $key, $property = null) {
+		if ($property == null) {
+			$property = $key;
+		}
+		$this->$property = new DocumentArray($object, $key);
+		$this->document_arrays[] = $property;
+	}
+
+	/*public function &normalizedArrayFromKey($object, $key, $property = null) {
 		if ($property == null) {
 			$property = $key;
 		}
@@ -124,7 +142,21 @@ abstract class Document {
 		foreach ($this->$property as $object) {
 			array_push($document[$key],$object->getID());
 		}
-	}
+	}*/
+
+	/*public function addObjectToArray($object, $key, $property = null) {
+		if ($property == null) {
+			$property = $key;
+		}
+		if ($this->{$property."_ids"} == null) {
+
+		}
+
+		if ($this->$property == null) {
+
+		}
+
+	}*/
 
 	public function validate() {
 		// Override to restrict saving if doesn't pass test.
@@ -132,12 +164,76 @@ abstract class Document {
 	}
 
 	public static function getObjectName() {
-        return get_called_class();
-    }
+      return get_called_class();
+  }
+
+	function mongoIDFromString($string) {
+		return new MongoId($string);
+	}
 
 	public static function getByID($id) {
 		$mongo = mongo_db::getInstance();
 		return $mongo->getObjectByID(self::getObjectName(),$id);
+	}
+
+}
+
+class DocumentArray {
+	private $object;
+	private $key;
+	private $ids = array();
+	private $objects = array();
+	private $loaded = false;
+
+	public function DocumentArray($object,$key) {
+		$this->object = $object;
+		$this->key = $key;
+	}
+
+	public function add($object) {
+		$id = $object->getID();
+		if ($loaded) {
+			$this->objects[$id] = $object;
+		}
+		$this->ids[] = $id;
+	}
+	public function remove($object) {
+		$id = $object->getID();
+		if ($loaded) {
+			unset($this->objects[$id]);
+		}
+		$index = array_search($id,$this->ids);
+		if($index !== FALSE){
+			unset($this->ids[$index]);
+		}
+	}
+
+	public function addID($id) {
+		if ($loaded) {
+			$this->objects[$id] = mongo_db::getInstance()->getObjectByID($this->object, $id);
+		}
+		$this->ids[] = $id;
+	}
+
+	public function toArray() {
+		if (!$loaded) {
+			$id_objs = array_map("Document::mongoIDFromString",$ids);
+			$query = array('_id'=>array('$in'=>$id_objs));
+			$this->objects = mongo_db::getInstance()->getObjectsWithQuery($object,$query);
+		}
+		return array_values($this->objects);
+	}
+
+	public function toDocument(&$document) {
+		$document[$this->key] = $this->ids;
+	}
+
+	public function fromDocument($document, &$object) {
+		$this->ids = $object->old_document[$this->key];
+	}
+
+	public function getObjects() {
+
 	}
 }
 

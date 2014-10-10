@@ -4,31 +4,25 @@ class Person extends Document {
   public $name;
   public $title;
 
-  protected $books;
+  public $books;
 
   const COLLECTION = "people";
+
+  function Person () {
+    $this->setArrayForKey('Book','books');
+  }
 
   function toDocument() {
     $document = parent::toDocument();
     $document['name'] = $this->name;
     $document['title'] = $this->title;
-
-    $this->denormalizeKeyToArray($document, 'books');
-
     return $document;
   }
+
   function fromDocument($document) {
     parent::fromDocument($document);
     $this->name = $document['name'];
     $this->title = $document['title'];
-  }
-
-  function &getBooks() {
-    return &$this->normalizedArrayFromKey('Book','books');
-  }
-
-  function addBook($book) {
-    array_push(&$this->getBooks(), $book);
   }
 
 }

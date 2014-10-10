@@ -40,12 +40,17 @@ class PersonTest extends PHPUnit_Framework_TestCase {
     $book->setAuthor($author);
     $book->save();
 
-    $person->addBook($person);
+    echo "pre:";
+    var_dump($person);
+    $person->books->add($book);
+    echo "post:";
+    var_dump($person);
     $person->save();
+    echo "save:";
     var_dump($person);
 
     $person = Person::getByID($person_id);
-    $books = $person->getBooks();
+    $books = $person->books->toArray();
     echo "Books: ";
     var_dump($books);
     $this->assertEquals($books[0], $book);
