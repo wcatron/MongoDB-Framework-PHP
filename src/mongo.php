@@ -32,7 +32,7 @@ class mongo_db {
 			if ($updatequery == false) {
 				// Calculate what's changed.
 				$changed_keys = self::keys_changed($object->old_document, $new_document);
-				
+
 				$fieldsAndValues = array();
 
 				foreach ($changed_keys as $key) {

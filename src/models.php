@@ -2,7 +2,6 @@
 
 abstract class Document {
 	public $old_document = null;
-	public $collection;
 	private $document_arrays = array();
 	private $document_objects = array();
 	const COLLECTION = "undefined";
@@ -13,7 +12,7 @@ abstract class Document {
 			$new_document = $mongo->saveDocument($this);
 			$this->fromDocument($new_document);
 		} else {
-			log_error(true,"Failed validation object in collection: ".$this->collection);
+			return false;
 		}
 	}
 
@@ -23,7 +22,7 @@ abstract class Document {
 			$new_document = $mongo->saveDocument($this, true);
 			$this->fromDocument($new_document);
 		} else {
-			log_error(true,"Failed validation object in collection: ".$this->collection);
+			return false;
 		}
 	}
 
@@ -75,7 +74,7 @@ abstract class Document {
 
 	/*
 
-	Use these to go from referencing array of ids to objects. Put in constructor.
+	Use these to go from referencing ids to objects. Put in object constructor.
 
 	*/
 
@@ -96,7 +95,6 @@ abstract class Document {
 	}
 
 	public function validate() {
-		// Override to restrict saving if doesn't pass test.
 		return true;
 	}
 
