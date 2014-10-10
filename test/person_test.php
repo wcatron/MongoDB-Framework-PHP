@@ -37,23 +37,23 @@ class PersonTest extends PHPUnit_Framework_TestCase {
 
     $book = new Book();
     $book->title = "I Think I Don't Remember";
-    $book->setAuthor($author);
+    $book->author->set($author);
     $book->save();
 
-    echo "pre:";
-    var_dump($person);
     $person->books->add($book);
-    echo "post:";
-    var_dump($person);
     $person->save();
-    echo "save:";
-    var_dump($person);
 
     $person = Person::getByID($person_id);
+    var_dump($person);
     $books = $person->books->toArray();
-    echo "Books: ";
-    var_dump($books);
-    $this->assertEquals($books[0], $book);
+    $this->assertEquals($books[0]->name, $book->name);
+
+    foreach ($books as $book) {
+      echo $person->name . " owns: ";
+      echo $book->title . " writtenBy: ".$book->author->get()->name;
+      echo "Who wrote: ";
+      var_dump($book->author->get()->getBooks());
+    }
 
     $person->delete();
     $book->delete();

@@ -27,13 +27,15 @@ class mongo_db {
 	function saveDocument ($object) {
 		$instancePropertyName = $object::COLLECTION;
 		$new_document = $object->toDocument();
-
 		if ($object->old_document) {
-
 			$updatequery = $object->customUpdate();
 			if ($updatequery == false) {
 				// Calculate what's changed.
 				$changed_keys = self::keys_changed($object->old_document, $new_document);
+				echo "Update Document : ";
+				var_dump($new_document);
+				echo "Changed Keys : ";
+				var_dump($changed_keys);
 
 				$fieldsAndValues = array();
 
@@ -52,8 +54,9 @@ class mongo_db {
 			return $resulting_document;
 		} else {
 			// New Document
-			$document_results = $this->db->{$instancePropertyName}->insert($new_document);
+			echo "New Document : ";
 			var_dump($new_document);
+			$document_results = $this->db->{$instancePropertyName}->insert($new_document);
 			return $new_document;
 		}
 	}
