@@ -44,17 +44,14 @@ class PersonTest extends PHPUnit_Framework_TestCase {
     $person->save();
 
     $person = Person::getByID($person_id);
-    var_dump($person);
     $books = $person->books->get();
-    var_dump($books);
-    
+
     $this->assertEquals($books[0]->title, $book->title);
 
     foreach ($books as $book) {
-      echo $person->name . " owns: ";
-      echo $book->title . " writtenBy: ".$book->author->get()->name;
-      echo "Who wrote: ";
-      var_dump($book->author->get()->getBooks());
+      $this->assertEquals($book->owner->name, $person->name);
+      $owner = $book->author->get()->owners[$person->getID()];
+      $this->assertEquals($owner->name, $person->name);
     }
 
     $person->delete();

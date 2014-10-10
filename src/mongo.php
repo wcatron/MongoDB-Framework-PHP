@@ -32,11 +32,7 @@ class mongo_db {
 			if ($updatequery == false) {
 				// Calculate what's changed.
 				$changed_keys = self::keys_changed($object->old_document, $new_document);
-				echo "Update Document : ";
-				var_dump($new_document);
-				echo "Changed Keys : ";
-				var_dump($changed_keys);
-
+				
 				$fieldsAndValues = array();
 
 				foreach ($changed_keys as $key) {
@@ -54,8 +50,6 @@ class mongo_db {
 			return $resulting_document;
 		} else {
 			// New Document
-			echo "New Document : ";
-			var_dump($new_document);
 			$document_results = $this->db->{$instancePropertyName}->insert($new_document);
 			return $new_document;
 		}

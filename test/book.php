@@ -3,12 +3,19 @@
 class Book extends Document {
   public $title;
   public $author;
-  protected $owner; //
+  public $owner;
 
   const COLLECTION = "books";
 
   function Book() {
     $this->setObjectForKey('Author','author');
+    $modify = function (&$author)
+    {
+      if ($this->owner) {
+        $author->owners[$this->owner->getID()] = $this->owner;
+      }
+    };
+    $this->author->setModifier($modify);
   }
 
   function toDocument() {

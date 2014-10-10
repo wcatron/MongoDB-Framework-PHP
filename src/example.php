@@ -2,37 +2,24 @@
 
 class Example extends Document {
   public $key;
-  private $array; // stores array of objects from 'documents' array of IDs stored in mongo;
-  private $object;
+  public $array; // stores array of objects from 'documents' array of IDs stored in mongo;
+  public $object;
 
   const COLLECTION = "examples";
+
+  function Example() {
+    $this->setObjectForKey('ObjectA','object');
+    $this->setObjectForKey('ObjectB','array');
+  }
 
   function toDocument() {
     $document = parent::toDocument();
     $document['key'] = $this->key;
-    $this->denormalizeKeyToArray('documents',$document,'array');
-    $this->denormalizeKeyToObject('object',$document);
     return $document;
   }
   function fromDocument($document) {
     parent::fromDocument($document);
     $document['key'] = $this->key;
-  }
-
-  function getObject() {
-    return $this->normalizedObjectFromKey('OtherDocumentClass','object');
-  }
-
-  function setObject($object) {
-    $this->object = $object;
-  }
-
-  function getArray() {
-    return $this->normalizedArrayFromKey('OtherDocumentClass','documents','array');
-  }
-
-  function setArray($array) {
-    $this->array = $array;
   }
 }
 

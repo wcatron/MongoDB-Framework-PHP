@@ -10,6 +10,11 @@ class Person extends Document {
 
   function Person () {
     $this->setArrayForKey('Book','books');
+    $modify = function (&$book)
+    {
+      $book->owner = $this;
+    };
+    $this->books->setModifier($modify);
   }
 
   function toDocument() {
@@ -24,6 +29,8 @@ class Person extends Document {
     $this->name = $document['name'];
     $this->title = $document['title'];
   }
+
+
 
 }
 

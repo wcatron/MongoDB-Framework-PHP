@@ -72,56 +72,26 @@ abstract class Document {
 		return ($this->getID() == $object->getID());
 	}
 
-	/*
-
-	Use these to go from referencing id to object.
-	Use denormailize in the toDocument function
-
-	*/
-
-	public function &normalizedObjectFromKey($object, $key, $property = null) {
-		if ($property == null) {
-			$property = $key;
-		}
-		if ($this->$property == null) {
-			$mongo = mongo_db::getInstance();
-			$id = $this->old_document[$key];
-			$this->$property = $mongo->getObjectByID($object, $id);
-		}
-		return $this->$property;
-	}
-
-	public function denormalizeKeyToObject(&$document, $key, $property = null) {
-		if ($property == null) {
-			$property = $key;
-		}
-		if ($this->$property == null) {
-			echo "No one ever re";
-			return;// If no one ever retrieved the document data then it didn't change.
-		}
-		$document[$key] = $this->$property->getID();
-	}
 
 	/*
 
-	Use these to go from referencing array of ids to objects.
-	Use denormailize in the toDocument function
+	Use these to go from referencing array of ids to objects. Put in constructor.
 
 	*/
 
-	public function setArrayForKey($object, $key, $property = null) {
+	public function setArrayForKey($object, $key, $property = null, $documentArrayClass = "DocumentArray") {
 		if ($property == null) {
 			$property = $key;
 		}
-		$this->$property = new DocumentArray($object, $key);
+		$this->$property = new $documentArrayClass($object, $key);
 		$this->document_arrays[] = $property;
 	}
 
-	public function setObjectForKey($object, $key, $property = null) {
+	public function setObjectForKey($object, $key, $property = null, $documentObjectClass = "DocumentObject") {
 		if ($property == null) {
 			$property = $key;
 		}
-		$this->$property = new DocumentObject($object, $key);
+		$this->$property = new $documentObjectClass($object, $key);
 		$this->document_objects[] = $property;
 	}
 
@@ -150,10 +120,12 @@ class DocumentArray {
 	private $ids = array();
 	private $objects = array();
 	private $loaded = false;
+	private $modifier;
 
-	public function DocumentArray($object,$key) {
+	public function DocumentArray($object,$key, $modifier = null) {
 		$this->object = $object;
 		$this->key = $key;
+		$this->modifier = $modifier;
 	}
 
 	public function getKey() {
@@ -165,14 +137,26 @@ class DocumentArray {
 
 	public function add($object) {
 		$id = $object->getID();
-		if ($loaded) {
+		if ($this->loaded) {
 			$this->objects[$id] = $object;
 		}
 		$this->ids[] = $id;
 	}
+
+	public function addID($id) {
+		if ($this->loaded) {
+			$this->objects[$id] = mongo_db::getInstance()->getObjectByID($this->object, $id);
+		}
+		$this->ids[] = $id;
+	}
+
 	public function remove($object) {
 		$id = $object->getID();
-		if ($loaded) {
+		$this->removeID($id);
+	}
+
+	public function removeID($id) {
+		if ($this->loaded) {
 			unset($this->objects[$id]);
 		}
 		$index = array_search($id,$this->ids);
@@ -181,21 +165,19 @@ class DocumentArray {
 		}
 	}
 
-	public function addID($id) {
-		if ($loaded) {
-			$this->objects[$id] = mongo_db::getInstance()->getObjectByID($this->object, $id);
-		}
-		$this->ids[] = $id;
-	}
-
 	public function get() {
-		if (!$loaded) {
+		if (!$this->loaded) {
 			$id_objs = array_map("Document::mongoIDFromString",$this->ids);
 			$query = array('_id'=>array('$in'=>$id_objs));
 			$objects_results = mongo_db::getInstance()->getObjectsWithQuery($this->object,$query);
 			foreach ($objects_results as $object) {
+				if (isset($this->modifier)) {
+					$modify = $this->modifier;
+					$modify($object);
+				}
 				$this->objects[$object->getID()] = $object;
 			}
+			$this->loaded = true;
 		}
 		return array_values($this->objects);
 	}
@@ -211,22 +193,34 @@ class DocumentArray {
 	public function getObjects() {
 
 	}
+
+	public function setModifier(&$modifier) {
+		$this->modifier = $modifier;
+	}
 }
+
 class DocumentObject {
 	private $object_class;
 	private $key;
 	private $id;
 	private $object;
 	private $loaded = false;
+	private $modifier;
 
 	public function DocumentObject($object_class,$key) {
 		$this->object_class = $object_class;
 		$this->key = $key;
+
 	}
 
 	public function get() {
-		if (!$loaded) {
+		if (!$this->loaded) {
 			$this->object = mongo_db::getInstance()->getObjectByID($this->object_class, $this->id);
+			if (isset($this->modifier)) {
+				$modify = $this->modifier;
+				$modify($this->object);
+			}
+			$this->loaded = true;
 		}
 		return $this->object;
 	}
@@ -253,6 +247,10 @@ class DocumentObject {
 
 	public function fromDocument($document) {
 		$this->id = $document[$this->key];
+	}
+
+	public function setModifier(&$modifier) {
+		$this->modifier = $modifier;
 	}
 }
 ?>

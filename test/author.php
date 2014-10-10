@@ -2,12 +2,11 @@
 
 class Author extends Document {
   public $name;
-
-  protected $books;
+  public $owners = array();
 
   const COLLECTION = "authors";
 
-  function Author($name) {
+  function Author($name = null) {
     $this->name = $name;
   }
 
@@ -22,6 +21,7 @@ class Author extends Document {
     $this->name = $document['name'];
   }
 
+  protected $books;
   function getBooks() {
     if ($this->books == null) {
       $this->books = mongo_db::getInstance()->getObjectsByKey('Book','author',$this->getID());
