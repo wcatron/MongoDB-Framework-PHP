@@ -370,7 +370,9 @@ class DocumentObject {
 	}
 
 	public function fromDocument($document) {
-		$this->id = $document[$this->key];
+		if (isset($document[$this->key])) {
+			$this->id = $document[$this->key];
+		}
 	}
 
 	public function setModifier(&$modifier) {
