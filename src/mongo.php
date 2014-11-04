@@ -46,7 +46,7 @@ class mongo_db {
 				$updatequery = array('$set' => $fieldsAndValues);
 			}
 
-			$resulting_document = $this->db->{$instancePropertyName}->findAndModify(array("_id" => new MongoId($object->getID())), $updatequery);
+			$resulting_document = $this->db->{$instancePropertyName}->findAndModify(array("_id" => new MongoId($object->getID())), $updatequery, null, array("new" => true));
 			return $resulting_document;
 		} else {
 			// New Document
