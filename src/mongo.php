@@ -236,6 +236,11 @@ abstract class Document {
 		$mongo = mongo_db::getInstance();
 		return $mongo->getObjectByID(self::getObjectName(),$id);
 	}
+	
+	public static function getByKey($key,$value) {
+		$mongo = mongo_db::getInstance();
+		return $mongo->getObjectByKey(self::getObjectName(),$key,$value);
+	}
 }
 
 class DocumentArray {
