@@ -2,16 +2,21 @@
     "name": "wcatron/mongo-db-framework",
     "description": "A MongoDB framework and ODM (assistant) all in one. Extremely flexible for any project.",
     "license": "MIT",
-    "keywords": ["MongoDB","ODM","Object Based","Mongo"],
+    "keywords": [
+        "MongoDB",
+        "ODM",
+        "Object Based",
+        "Mongo"
+    ],
     "authors": [
         {
             "name": "Weston Catron",
             "email": "wcatron@catrondevelopment.com"
         }
     ],
-    "minimum-stability":"dev",
+    "minimum-stability": "dev",
     "require": {
-      "wcatron/common-db-framework": "*",
+        "wcatron/common-db-framework": "*",
         "mongodb/mongodb": "^1.0.0"
     },
     "require-dev": {
@@ -19,8 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-          "wcatron\\MongoDBFramework\\": "src",
-          "wcatron\\MongoDBTesting\\":"tests/src"
+            "wcatron\\MongoDBFramework\\": "src"
         }
     }
 }
