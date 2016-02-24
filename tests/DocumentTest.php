@@ -12,6 +12,7 @@ class DocumentTest extends PHPUnit_Framework_TestCase {
     public function testInsert() {
         $person = new \Person("Unit Test", "Mrs.");
         $this->assertTrue($person->save());
+        $this->assertTrue($person->getID() !== null);
         $person->delete();
     }
 
