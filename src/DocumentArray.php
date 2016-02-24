@@ -78,7 +78,7 @@ class DocumentArray {
 
 	public function callModifier(&$object) {
 		if(is_callable($this->modifier)) {
-			return call_user_func_array($this->modifier, [$object]);
+			return call_user_func_array($this->modifier, [&$object]);
 		}
 	}
 
