@@ -16,7 +16,7 @@ Create models for documents and have them extend *Document*. Implement the toDoc
 ## Composer
 
 ```
-composer install wcatron/mongo-db-framework
+composer require wcatron/mongo-db-framework
 ```
 
 # Models & MDB
