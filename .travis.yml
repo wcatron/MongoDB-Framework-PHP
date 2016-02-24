@@ -7,8 +7,8 @@ php:
   - hhvm
 
 before_script:
+  - phpenv config-add travis_php.ini
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
-  - phpenv config-add travis_php.ini
 
 script: phpunit
