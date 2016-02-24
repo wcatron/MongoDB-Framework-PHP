@@ -11,7 +11,7 @@ This framework allows you to quickly map objects to documents in a MongoDB colle
 
 **Setup**
 
-Create models for documents and have them extend *Document*. Implement the toDocument and fromDocument methods and set the $collection constant. Replace the $config variable in mongo.php. You can now perform queries and get php objects back.
+Create models for documents and have them extend *Document*. Implement the `toDocument` and `fromDocument` methods and set the `COLLECTION` constant. Call `MDB::configure()` in your autoload.php file or wherever needed before database calls. You can now perform queries and get php objects back.
 
 # Installation
 
@@ -27,7 +27,7 @@ composer require wcatron/mongo-db-framework
 
 Your classes. Add two functions and a variable and allow any model to create objects.
 
-```
+```php
 class YourClass extend Document {
 
 	const COLLECTION = 'YourCollection';
@@ -66,8 +66,6 @@ An array of objects based on a custom query. Not all queries need to be written 
 **getObjectsByKey('ClassName', 'KeyName', $value)**
 
 If you're only searching by one key-value pair. This simple function will work.
-
-When writing content specific queries for your application it's recommended that you add them to the MongoDB class and reuse them as often as possible. This framework can certainly expand to include more useful queries. The idea though is that all the mongo queries are generic and return php objects not documents.
 
 ## Documents & Objects
 
