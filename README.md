@@ -5,30 +5,28 @@ A MongoDB interface and ODM (assistant) all in one. Extremely flexible for any p
 
 # Overview
 
-This is a set of helper methods and functions that I've used to make MongoDB development faster to develop.
+This framework allows you to quickly map objects to documents in a MongoDB collection.
 
 **Setup**
 
-Create models for documents and have them extend *document*. Implement the toDocument and fromDocument methods and set the $collection constant. Replace the $config variable in mongo.php. You can now perform queries and get php objects back.
-
-`Class::getByID("ID");`
+Create models for documents and have them extend *Document*. Implement the toDocument and fromDocument methods and set the $collection constant. Replace the $config variable in mongo.php. You can now perform queries and get php objects back.
 
 # Installation
 
 ## Composer
 
-Add requirement:
-
+```
+composer install wcatron/mongo-db-framework
 ```
 
-# Models & Mongo
+# Models & MDB
 
 ### Models
 
 Your classes. Add two functions and a variable and allow any model to create objects.
 
 ```
-class YourClass extend document {
+class YourClass extend Document {
 
 	const COLLECTION = 'YourCollection';
 
@@ -49,15 +47,17 @@ Saving is extremely simple when you have an object whose class extends document.
 
 `$object->save();`
 
-### Mongo
+### MDB
 
-Your connection to mongo. To get your documents as objects use this singleton `MongoDB::getInstance()`
+Your connection to mongo. To get your documents as objects use this singleton `MDB::getInstance()`
 
-**getObjectByID('ClassName',$id)**
+**getObjectByID(Class::class,$id)**
+
+Alternatively you can just call `getByID($id)` on your custom Document object.
 
 This will return your exact object.
 
-**getObjectsFromQuery('ClassName',$query)**
+**getObjectsFromQuery(Class::class,$query)**
 
 An array of objects based on a custom query. Not all queries need to be written out though.
 
@@ -88,7 +88,7 @@ User Collection
 
 ```
 PHP
-class User extends document {
+class User extends Document {
 	var $friends; // must match property name for now.
 	...
 
