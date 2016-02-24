@@ -54,7 +54,7 @@ class MDB {
             } else {
                 $m = new \MongoDB\Client("mongodb://" . $config['host'] . "/" . $config['db']);
             }
-            $this->db = $m->$config['db'];
+            $this->db = $m->{$config['db']};
         }
     }
 
