@@ -13,6 +13,7 @@ env:
   - travis=true host=127.0.0.1
 
 before_script:
+  - pecl install mongodb
   - phpenv config-add travis_php.ini
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
