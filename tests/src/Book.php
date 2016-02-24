@@ -1,18 +1,24 @@
 <?php
 
+namespace wcatron\MongoDBTesting;
+
+use wcatron\CommonDBFramework\LinkedObject;
+use wcatron\MongoDBFramework\Document;
+
 class Book extends Document {
-  public $title;
-  public $author;
-  public $owner;
+  var $title;
+  /** @var LinkedObject */
+  var $author;
+  var $owner;
 
   const COLLECTION = "books";
 
-  function Book() {
-    $this->setObjectForKey('Author','author');
+  function __construct() {
+    $this->setObjectForKey(Author::class,'author');
     $modify = function (&$author)
     {
       if ($this->owner) {
-        $author->owners[$this->owner->getID()] = $this->owner;
+        $author->owners->add($this->owner);
       }
     };
     $this->author->setModifier($modify);

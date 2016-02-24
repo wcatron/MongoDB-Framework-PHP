@@ -1,2 +1,5 @@
 config.ini
 phpunit.phar
+/vendor
+composer.lock
+.idea

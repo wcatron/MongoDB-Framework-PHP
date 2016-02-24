@@ -1,15 +1,21 @@
 <?php
 
-class Person extends Document {
-  public $name;
-  public $title;
+namespace wcatron\MongoDBTesting;
 
-  public $books;
+use wcatron\MongoDBFramework\Document;
+use wcatron\MongoDBFramework\DocumentArray;
+
+class Person extends Document {
+  var $name;
+  var $title;
+
+  /** @var DocumentArray */
+  var $books;
 
   const COLLECTION = "people";
 
-  function Person () {
-    $this->setArrayForKey('Book','books');
+  function __construct () {
+    $this->setArrayForKey(Book::class,'books');
     $modify = function (&$book)
     {
       $book->owner = $this;
@@ -29,9 +35,6 @@ class Person extends Document {
     $this->name = $document['name'];
     $this->title = $document['title'];
   }
-
-
-
 }
 
 ?>

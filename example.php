@@ -1,5 +1,7 @@
 <?php
 
+/*
+
 class Example extends Document {
   public $key;
   public $array; // stores array of objects from 'documents' array of IDs stored in mongo;
@@ -21,7 +23,7 @@ class Example extends Document {
     parent::fromDocument($document);
     $document['key'] = $this->key;
   }
-}
+}*/
 
 // Example array document
 

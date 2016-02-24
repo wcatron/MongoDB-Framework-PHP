@@ -15,7 +15,11 @@ Create models for documents and have them extend *document*. Implement the toDoc
 
 # Installation
 
-Add the `~/src/mongo.php` file to your project and include it along with any necessary models.
+## Composer
+
+Add requirement:
+
+```
 
 # Models & Mongo
 
@@ -47,7 +51,7 @@ Saving is extremely simple when you have an object whose class extends document.
 
 ### Mongo
 
-Your connection to mongo. To get your documents as objects use this singleton `mongo_db::getInstance()`
+Your connection to mongo. To get your documents as objects use this singleton `MongoDB::getInstance()`
 
 **getObjectByID('ClassName',$id)**
 
@@ -61,7 +65,7 @@ An array of objects based on a custom query. Not all queries need to be written 
 
 If you're only searching by one key-value pair. This simple function will work.
 
-When writing content specific queries for your application it's recommended that you add them to the mongo_db class and reuse them as often as possible. This framework can certainly expand to include more useful queries. The idea though is that all the mongo queries are generic and return php objects not documents.
+When writing content specific queries for your application it's recommended that you add them to the MongoDB class and reuse them as often as possible. This framework can certainly expand to include more useful queries. The idea though is that all the mongo queries are generic and return php objects not documents.
 
 ## Documents & Objects
 
@@ -100,4 +104,4 @@ $friends = $user->friends->get();
 
 ## IDs as Strings
 
-All IDs are treated as strings and converted to MongoIDs by the mongo_db class. No converting between MongoIDs and strings. If someone sees a major issue here please speak up.
+All IDs are treated as strings and converted to MongoIDs by the MongoDB class. No converting between MongoIDs and strings. If someone sees a major issue here please speak up.
