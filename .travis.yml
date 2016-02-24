@@ -9,9 +9,6 @@ php:
 services:
   - mongodb
 
-env:
-  - travis=true host="127.0.0.1:27017" db="mongodb_framework_php_testing"
-
 before_script:
   - pecl install mongodb
   - phpenv config-add travis_php.ini
