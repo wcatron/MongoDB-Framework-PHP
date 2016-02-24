@@ -20,7 +20,6 @@ abstract class Document implements DBObject {
 	public function save() {
 		$new_document = MDB::getInstance()->saveDocument($this);
 		if ($new_document) {
-			var_dump($new_document);
 			$this->fromDocument($new_document);
 			return true;
 		}
@@ -116,7 +115,7 @@ abstract class Document implements DBObject {
 	 * @param string Fully qualified class string for object.
 	 * @param string Column name containing the id for the object.
 	 * @param string Property name in object that will be used to access the object.
-	 * @param string Class name for link. Default option is DocumentObject but can also be RowObject for RDSDB objects.
+	 * @param string Class name for link. Default option is LinkedObject which works for any DBObject.
 	 */
 	public function setObjectForKey($object, $key, $property = null, $documentObjectClass = LinkedObject::class) {
 		if ($property == null) {
@@ -151,6 +150,10 @@ abstract class Document implements DBObject {
 	 */
 	public static function getAll() {
 		return MDB::getInstance()->getAllObjects(static::class);
+	}
+
+	public static function getManyWithQuery($query) {
+		return MDB::getInstance()->getObjectsWithQuery(static::class, $query);
 	}
 
 	/**

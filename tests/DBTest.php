@@ -9,12 +9,9 @@ class DBTest extends PHPUnit_Framework_TestCase {
 
   public function testSaveAndDelete()
   {
-    $config = parse_ini_file(__DIR__.'/../config.ini');
-    MDB::configure($config['mdb_config']);
-    $person = new Person();
+    $person = new Person("Unit Test", "Mrs.");
 
-    $person->name = "Unit Test";
-    $person->title = "Mrs.";
+    $this->assertEquals("Mrs. Unit Test", $person->getFullName());
 
     $result = $person->save();
     $this->assertTrue(($result != false));
@@ -34,8 +31,6 @@ class DBTest extends PHPUnit_Framework_TestCase {
 
     $person = Person::getByID($person_id);
     $books = $person->books->get();
-
-    var_dump($books);
 
     $this->assertEquals($books[0]->title, $book->title);
 

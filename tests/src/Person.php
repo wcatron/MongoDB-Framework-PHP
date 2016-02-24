@@ -14,13 +14,19 @@ class Person extends Document {
 
   const COLLECTION = "people";
 
-  function __construct () {
+  function __construct ($name = null, $title = null) {
     $this->setArrayForKey(Book::class,'books');
     $modify = function (&$book)
     {
       $book->owner = $this;
     };
     $this->books->setModifier($modify);
+    $this->name = $name;
+    $this->title = $title;
+  }
+
+  function getFullName() {
+    return (($this->title) ? $this->title." " : "").$this->name;
   }
 
   function toDocument() {

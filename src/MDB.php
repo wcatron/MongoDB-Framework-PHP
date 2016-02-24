@@ -68,7 +68,6 @@ class MDB {
             $updateQuery = $object->updateQuery();
             if ($updateQuery) {
                 $this->connect();
-                echo "Get with otpions...";
                 $collection = $this->db->selectCollection($object::COLLECTION,
                                                           [
                                                               "typeMap" => [

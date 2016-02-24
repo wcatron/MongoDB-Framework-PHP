@@ -6,6 +6,7 @@ use wcatron\MongoDBFramework\MDB;
 use wcatron\MongoDBFramework\Document;
 
 class DocumentArray {
+	/** @var Document */
 	private $object;
 	private $key;
 	private $ids = array();
@@ -63,12 +64,10 @@ class DocumentArray {
 		if (!$this->loaded) {
 			$id_objs = array_map("wcatron\\MongoDBFramework\\Document::mongoIDFromString",$this->getIDs());
 			$query = array('_id'=>array('$in'=>$id_objs));
-			/** @var Document[] $objects_results */
-			$objects_results = MDB::getInstance()->getObjectsWithQuery($this->object, $query);
-			foreach ($objects_results as $object) {
+			$objects = MDB::getInstance()->getObjectsWithQuery($this->object, $query);
+			foreach ($objects as $object) {
 				if (isset($this->modifier)) {
-					$modify = $this->modifier;
-					$modify($object);
+					$this->callModifier($object);
 				}
 				$this->objects[$object->getID()] = $object;
 			}
@@ -77,12 +76,17 @@ class DocumentArray {
 		return array_values($this->objects);
 	}
 
+	public function callModifier(&$object) {
+		if(is_callable($this->modifier)) {
+			return call_user_func_array($this->modifier, [$object]);
+		}
+	}
+
 	public function toDocument(&$document) {
 		$document[$this->key] = $this->ids;
 	}
 
 	public function fromDocument($document) {
-		var_dump($document);
 		$this->ids = $document[$this->key];
 	}
 
