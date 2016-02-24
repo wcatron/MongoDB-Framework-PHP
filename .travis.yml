@@ -10,7 +10,7 @@ services:
   - mongodb
 
 env:
-  - travis=true host=127.0.0.1
+  - travis=true host=127.0.0.1 db=mongodb_framework_php_testing
 
 before_script:
   - pecl install mongodb
