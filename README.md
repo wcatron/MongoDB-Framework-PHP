@@ -3,6 +3,8 @@ MongoDB-Framework-PHP
 
 A MongoDB interface and ODM (assistant) all in one. Extremely flexible for any project.
 
+[![Build Status](https://travis-ci.org/wcatron/MongoDB-Framework-PHP.svg?branch=master)](https://travis-ci.org/wcatron/MongoDB-Framework-PHP)
+
 # Overview
 
 This framework allows you to quickly map objects to documents in a MongoDB collection.
