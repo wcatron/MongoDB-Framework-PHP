@@ -48,8 +48,13 @@ class MDB {
             if ($config == null) {
                 $config = $this->config;
             }
-            $m = new \MongoDB\Client("mongodb://" . $config['host'] . "/" . $config['db'], [ "username" => $config['user'],
-                                                                                             "password" => $config['pass'] ]);
+            if (isset($config['user'])) {
+                $m = new \MongoDB\Client("mongodb://" . $config['host'] . "/" . $config['db'], [ "username" => $config['user'],
+                                                                                                 "password" => $config['pass'] ]);
+            } else {
+                $m = new \MongoDB\Client("mongodb://" . $config['host'] . "/" . $config['db']);
+            }
+
             $this->db = $m->$config['db'];
         }
     }
