@@ -3,6 +3,7 @@
 namespace wcatron\MongoDBFramework;
 
 use MongoDB\Collection;
+use wcatron\CommonDBFramework\DB;
 use wcatron\CommonDBFramework\DBPagination;
 use wcatron\MongoDBFramework\Document;
 use \MongoDB\BSON\ObjectID as ObjectID;
@@ -10,51 +11,22 @@ use \MongoDB\BSON\ObjectID as ObjectID;
 /**
  * A MongoDB class connects to a Mongo DB database.
  */
-class MDB {
+class MDB extends DB {
     /**
      * MongoClient used for database queries.
      * @var \MongoDB\Database
      */
     var $db;
 
-    /**
-     * @var array Configuration information associative array containing the host, db, user, pass for connecting to MongoDB.
-     */
-    private $config;
-    /** @var static */
-    private static $instance;
-
-    /**
-     * Gets the singleton instance of MDB. Used throughout the framework.
-     * @param boolean Whether to connect to the database when getting the instance.
-     * @return static Returns the singleton MDB object.
-     */
-    public static function getInstance($connect = true) {
-        if (null === static::$instance) {
-            static::$instance = new static();
-        }
-        if ($connect) {
-            static::$instance->connect();
-        }
-        return static::$instance;
-    }
-
-    public static function configure($config) {
-        static::getInstance(false)->config = $config;
-    }
-
-    function connect($config = null) {
+    function connect() {
         if (!isset($this->db)) {
-            if ($config == null) {
-                $config = $this->config;
-            }
-            if (isset($config['user'])) {
-                $m = new \MongoDB\Client("mongodb://" . $config['host'] . "/" . $config['db'], [ "username" => $config['user'],
-                                                                                                 "password" => $config['pass'] ]);
+            if (isset($this->config['user'])) {
+                $m = new \MongoDB\Client("mongodb://" . $this->config['host'] . "/" . $this->config['db'], [ "username" => $this->config['user'],
+                                                                                                 "password" => $this->config['pass'] ]);
             } else {
-                $m = new \MongoDB\Client("mongodb://" . $config['host'] . "/" . $config['db']);
+                $m = new \MongoDB\Client("mongodb://" . $this->config['host'] . "/" . $this->config['db']);
             }
-            $this->db = $m->{$config['db']};
+            $this->db = $m->{$this->config['db']};
         }
     }
 
