@@ -16,7 +16,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "wcatron/common-db-framework": ">=0.0.5",
+        "wcatron/common-db-framework": "0.1.2",
         "mongodb/mongodb": ">=1.0.0",
         "php": ">=5.5"
     },
