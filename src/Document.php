@@ -71,7 +71,7 @@ abstract class Document extends DBObject {
 
 		$new_document = $this->toDocument();
 
-		$fieldsAndValues = self::changedFieldsAndValues($this->old_document, $new_document);
+		$fieldsAndValues = static::changedFieldsAndValues($this->old_document, $new_document);
 
 		if (count($fieldsAndValues) == 0) {
 			return false;
@@ -84,8 +84,16 @@ abstract class Document extends DBObject {
 		$fieldsAndValues = [];
 
 		foreach (array_keys($newDocument) as $key) {
-			if (!isset($oldDocument[ $key ]) || $newDocument[ $key ] != $oldDocument[ $key ]) {
+			if (!isset($oldDocument[ $key])) {
 				$fieldsAndValues[$key] = $newDocument[$key];
+			} else if ($newDocument[ $key ] != $oldDocument[ $key ]) {
+				$fieldsAndValues[$key] = $newDocument[$key];
+			} else if (is_object($newDocument[$key])) {
+				if (get_class($newDocument[$key]) == \MongoDB\BSON\UTCDateTime::class) {
+					if ($newDocument[ $key ]->__toString() != $oldDocument[ $key ]->__toString()) {
+						$fieldsAndValues[$key] = $newDocument[$key];
+					}
+				}
 			}
 		}
 
