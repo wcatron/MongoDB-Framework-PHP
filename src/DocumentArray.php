@@ -87,7 +87,7 @@ class DocumentArray {
 	}
 
 	public function fromDocument($document) {
-		$this->ids = $document[$this->key];
+		$this->ids = (array)$document[$this->key];
 	}
 
 	public function setModifier(&$modifier) {
