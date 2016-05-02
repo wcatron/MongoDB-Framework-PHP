@@ -86,7 +86,7 @@ abstract class Document extends DBObject {
 		foreach (array_keys($newDocument) as $key) {
 			if (!isset($oldDocument[ $key])) {
 				$fieldsAndValues[$key] = $newDocument[$key];
-			} else if ($newDocument[ $key ] != $oldDocument[ $key ]) {
+			} else if ($newDocument[ $key ] !== $oldDocument[ $key ]) {
 				$fieldsAndValues[$key] = $newDocument[$key];
 			} else if (is_object($newDocument[$key])) {
 				if (get_class($newDocument[$key]) == \MongoDB\BSON\UTCDateTime::class) {
