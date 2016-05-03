@@ -83,6 +83,10 @@ abstract class Document extends DBObject {
 	public static function changedFieldsAndValues($oldDocument, $newDocument) {
 		$fieldsAndValues = [];
 
+		if (isset($newDocument['_id'])) {
+			unset($newDocument['_id']);
+		}
+
 		foreach (array_keys($newDocument) as $key) {
 			if (!isset($oldDocument[ $key])) {
 				$fieldsAndValues[$key] = $newDocument[$key];
